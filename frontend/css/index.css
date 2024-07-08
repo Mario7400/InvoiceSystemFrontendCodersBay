@@ -1,0 +1,59 @@
+.truncate-text {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 0.5s ease;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.cart-item-input {
+    width: 70px;
+    margin-right: 10px;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.cart-item-quantity input {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.cart-item-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.cart-total {
+    text-align: right;
+}
+
+.modal-md {
+    max-width: 600px;
+}

@@ -1,0 +1,12 @@
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#error-message {
+    display: none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: black;
+    text-align: center;
+}

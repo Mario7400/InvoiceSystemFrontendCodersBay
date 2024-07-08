@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Product</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/editProductService.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="./index.html">
+        <i class="fas fa-home"></i>
+        Home
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="customerServiceDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-user"></i>
+              Customer Service
+            </a>
+            <div
+              class="dropdown-menu"
+              aria-labelledby="customerServiceDropdown"
+            >
+              <a class="dropdown-item" href="./addCustomer.html">
+                <i class="fas fa-user-plus"></i>
+                Add Customer
+              </a>
+              <a class="dropdown-item" href="./editCustomer.html">
+                <i class="fas fa-user-edit"></i>
+                Edit Customer
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="productServiceDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-cubes"></i>
+              Product Service
+            </a>
+            <div class="dropdown-menu" aria-labelledby="productServiceDropdown">
+              <a class="dropdown-item" href="./addProduct.html">
+                <i class="fas fa-plus"></i>
+                Add Product
+              </a>
+              <a class="dropdown-item" href="./editProduct.html">
+                <i class="fas fa-edit"></i>
+                Edit Product
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dataDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-database"></i> Data
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dataDropdown">
+              <a class="dropdown-item" href="./statistic.html">
+                <i class="fas fa-chart-bar"></i> Statistic
+              </a>
+              <a class="dropdown-item" href="./invoiceData.html">
+                <i class="fas fa-file-invoice"></i> Invoice Data
+              </a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./login.html" id="logoutLink">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h2>Product List</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width: 20%">Name</th>
+            <th style="width: 45%">Description</th>
+            <th style="width: 10%">Price</th>
+            <th style="width: 15%">Availability</th>
+            <th style="width: 10%">Action</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+      </table>
+    </div>
+
+    <div
+      class="modal fade"
+      id="unableToDeleteModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="unableToDeleteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="unableToDeleteModalLabel">
+              Unable to Delete Product
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            The product cannot be deleted as it is currently in use.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="deleteProductModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="deleteProductModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteProductModalLabel">
+              Product Deleted
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            The product has been successfully deleted.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editProductModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editProductModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editProductForm">
+              <div class="form-group">
+                <label for="editProductName">Name:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editProductName"
+                  name="editProductName"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editProductDescription">Description:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editProductDescription"
+                  name="editProductDescription"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editProductPrice">Price:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="editProductPrice"
+                  name="editProductPrice"
+                  step="0.01"
+                />
+              </div>
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="editProductAvailability"
+                  name="editProductAvailability"
+                />
+                <label class="form-check-label" for="editProductAvailability"
+                  >Available</label
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveEditedProduct()"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="errorMessageModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="errorMessageModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="errorMessageModalLabel">Error</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            A product with the same Name already exists.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/authentification/auth.js"></script>
+    <script src="./js/productService/editProducts.js"></script>
+  </body>
+</html>
