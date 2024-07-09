@@ -267,30 +267,31 @@ function loadCartFromBackend() {
                     productNames: [],
                 };
 
-                cart.productIds.forEach(productId => {
-                    const productName = getProductById(productId).name;
-                    cart.productNames.push(productName);
-                });
-
-                if (cart.customerId) {
-                    $("#customerSelect").val(cart.customerId);
-                }
-
-                console.log("Cart loaded successfully!", cart);
-
                 if (cart.productIds.length > 0) {
-                    updateInputsFromCart();
+                    const productPromises = cart.productIds.map(productId => getProductById(productId));
+                    return Promise.all(productPromises);
+                } else {
+                    return [];
                 }
-                updateCart();
             }
+            return [];
+        })
+        .then(products => {
+            if (products.length > 0) {
+                cart.productNames = products.map(product => product.name);
+            }
+            if (cart.customerId) {
+                $("#customerSelect").val(cart.customerId);
+            }
+            updateInputsFromCart();
+            updateCart();
         })
         .catch((error) => {
-            if (error.message !== "Network response was not ok") {
-                console.log("Warenkorb ist leer")
-            }
+            console.error("Error loading cart:", error);
             resetCart();
         });
 }
+
 
 function getProductById(productId) {
     return fetch(`http://localhost:8080/products/${productId}`)
