@@ -4,6 +4,7 @@ let cart = {
     invoiceDate: new Date().toISOString(),
     customerId: null,
     productIds: [],
+    productNames: [],
 };
 
 $(document).ready(function () {
@@ -53,6 +54,7 @@ function addToCartHandler() {
     cart.productIds.push(productID);
     cart.realSellingPrices.push(productPrice);
     cart.amountOfSoldProduct.push(productAmount);
+    cart.productNames.push(productName);
 
     updateCart();
     saveCartToBackend(cart);
@@ -161,7 +163,7 @@ function updateCart() {
     let total = 0;
 
     cart.productIds.forEach((productId, index) => {
-        const productName = `Product ${productId}`;
+        const productName = cart.productNames[index];
         const productPrice = cart.realSellingPrices[index];
         const productAmount = cart.amountOfSoldProduct[index];
 
@@ -211,6 +213,7 @@ function resetCart() {
         invoiceDate: new Date().toISOString(),
         customerId: null,
         productIds: [],
+        productNames: [],
     };
 
     updateCart();
@@ -255,8 +258,19 @@ function loadCartFromBackend() {
         })
         .then((data) => {
             if (data) {
-                cart = data;
-                updateCart();
+                cart = {
+                    realSellingPrices: data.realSellingPrices || [],
+                    amountOfSoldProduct: data.amountOfSoldProduct || [],
+                    invoiceDate: data.invoiceDate || new Date().toISOString(),
+                    customerId: data.customerId || null,
+                    productIds: data.productIds || [],
+                    productNames: [],
+                };
+
+                cart.productIds.forEach(productId => {
+                    const productName = getProductById(productId).name;
+                    cart.productNames.push(productName);
+                });
 
                 if (cart.customerId) {
                     $("#customerSelect").val(cart.customerId);
@@ -267,6 +281,7 @@ function loadCartFromBackend() {
                 if (cart.productIds.length > 0) {
                     updateInputsFromCart();
                 }
+                updateCart();
             }
         })
         .catch((error) => {
@@ -274,6 +289,24 @@ function loadCartFromBackend() {
                 console.log("Warenkorb ist leer")
             }
             resetCart();
+        });
+}
+
+function getProductById(productId) {
+    return fetch(`http://localhost:8080/products/${productId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Hier musst du die Produktinformationen entsprechend zurückgeben
+            return data; // Annahme: data ist ein JSON-Objekt mit den Produktinformationen
+        })
+        .catch(error => {
+            console.error('Error fetching product:', error);
+            return { id: productId, name: 'Unknown Product', description: '', price: 0, availability: false };
         });
 }
 
