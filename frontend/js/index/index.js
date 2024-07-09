@@ -384,4 +384,6 @@ function renderProducts(products) {
             tableBody.append(row);
         }
     });
+
+    updateInputsFromCart();
 }
