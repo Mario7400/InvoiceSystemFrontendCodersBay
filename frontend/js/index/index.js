@@ -302,8 +302,7 @@ function getProductById(productId) {
             return response.json();
         })
         .then(data => {
-            // Hier musst du die Produktinformationen entsprechend zurückgeben
-            return data; // Annahme: data ist ein JSON-Objekt mit den Produktinformationen
+            return data;
         })
         .catch(error => {
             console.error('Error fetching product:', error);
